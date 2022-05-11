@@ -24,6 +24,20 @@ if(modelName == "Computer")
     if(modelAction == "List")
     {
         Console.WriteLine("List Computer");
+        connection = new SqliteConnection("Data Source=database.db");
+        connection.Open();
+
+        command = connection.CreateCommand();
+        command.CommandText = "SELECT * FROM Computers";
+
+        var reader = command.ExecuteReader();
+
+        while(reader.Read())
+        {
+            Console.WriteLine("{0}, {1}, {2}", reader.GetInt32(0), reader.GetString(1), reader.GetString(1));
+        }
+
+        connection.Close();
     }
 
     if(modelAction == "New")
@@ -33,5 +47,17 @@ if(modelName == "Computer")
         var processador = args[4];
         Console.WriteLine("New Computer");
         Console.WriteLine("{0}, {1}, {2}", id, ram, processador);
-    }
+
+        connection = new SqliteConnection("Data Source=database.db");
+        connection.Open();
+
+        command = connection.CreateCommand();
+        command.CommandText = "INSERT INTO Computers VALUES($id, $ram, $processador)";
+        command.Parameters.AddWithValue("$id", id);
+        command.Parameters.AddWithValue("$ram", ram);
+        command.Parameters.AddWithValue("$processador", processador);
+
+        command.ExecuteNonQuery();
+        connection.Close();
+        }
 }
