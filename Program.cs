@@ -2,8 +2,9 @@
 using LabManager.Database;
 using LabManager.Repositories;
 
-var databaseSetup = new DatabaseSetup();
-var computerRepository = new ComputerRepository();
+var databaseConfig = new DatabaseConfig();
+var databaseSetup = new DatabaseSetup(databaseConfig);
+var computerRepository = new ComputerRepository(databaseConfig);
 
 var modelName = args[0];
 var modelAction = args[1];
@@ -26,7 +27,7 @@ if(modelName == "Computer")
         Console.WriteLine("New Computer");
         Console.WriteLine("{0}, {1}, {2}", id, ram, processador);
 
-        var connection = new SqliteConnection("Data Source=database.db");
+        var connection = new SqliteConnection(databaseConfig.ConnectionString);
         connection.Open();
 
         var command = connection.CreateCommand();
@@ -45,7 +46,7 @@ if(modelName == "Lab")
     if(modelAction == "List")
     {
         Console.WriteLine("List Lab");
-        var connection = new SqliteConnection("Data Source=database.db");
+        var connection = new SqliteConnection(databaseConfig.ConnectionString);
         connection.Open();
 
         var command = connection.CreateCommand();
@@ -70,7 +71,7 @@ if(modelName == "Lab")
         Console.WriteLine("New Computer");
         Console.WriteLine("{0}, {1}, {2}, {3}", id_lab, number, name, block);
 
-        var connection = new SqliteConnection("Data Source=database.db");
+        var connection = new SqliteConnection(databaseConfig.ConnectionString);
         connection.Open();
 
         var command = connection.CreateCommand();
