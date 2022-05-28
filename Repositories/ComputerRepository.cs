@@ -29,8 +29,8 @@ class ComputerRepository
         {
             var id = reader.GetInt32(0);
             var ram = reader.GetString(1);
-            var processor = reader.GetString(2);
-            var computer = new Computer(id, ram, processor);
+            var processador = reader.GetString(2);
+            var computer = new Computer(id, ram, processador);
             computers.Add(computer);
         }
 
@@ -70,5 +70,22 @@ class ComputerRepository
         connection.Close();
 
         return computer;
+    }
+
+    public Computer Update(Computer computer)
+    {
+        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = "UPDATE Computers SET ram = $ram, processador = $processador  WHERE id == $id";
+        command.Parameters.AddWithValue("$ram", computer.Ram);
+        command.Parameters.AddWithValue("$processador", computer.Processor);
+        command.Parameters.AddWithValue("$id", computer.Id);
+
+        command.ExecuteNonQuery();
+        connection.Close();
+        
+        return GetById(computer.Id);
     }
 }
