@@ -86,4 +86,15 @@ if(modelName == "Lab")
         var lab = labRepository.GetById(id);
         Console.WriteLine("{0}, {1}, {2}, {3}", lab.Id, lab.Number, lab.Name, lab.Block);
     }
+
+    if (modelAction == "Update")
+    {
+        var id = Convert.ToInt32(args[2]);
+        var number = Convert.ToInt32(args[3]);
+        var name = args[4];
+        var block = args[5];
+        var lab = new Lab(id, number, name, block);
+
+        labRepository.Update(lab);
+    }    
 }
