@@ -55,4 +55,22 @@ class LabRepository
         command.ExecuteNonQuery();
         connection.Close();
     }
+
+    public Lab GetById(int id)
+    {
+        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT * FROM Lab WHERE id_lab == $id";
+        command.Parameters.AddWithValue("$id", id);
+
+        var reader = command.ExecuteReader();
+        reader.Read();
+        var lab = new Lab(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetString(3));
+
+        connection.Close();
+
+        return lab;
+    }
 }

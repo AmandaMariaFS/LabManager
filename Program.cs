@@ -78,5 +78,12 @@ if(modelName == "Lab")
 
         var lab = new Lab(id, number, name, block);
         labRepository.Save(lab);
-        }
+    }
+
+    if (modelAction == "Show")
+    {
+        var id = Convert.ToInt32(args[2]);
+        var lab = labRepository.GetById(id);
+        Console.WriteLine("{0}, {1}, {2}, {3}", lab.Id, lab.Number, lab.Name, lab.Block);
+    }
 }
