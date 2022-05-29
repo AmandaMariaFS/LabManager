@@ -96,5 +96,11 @@ if(modelName == "Lab")
         var lab = new Lab(id, number, name, block);
 
         labRepository.Update(lab);
-    }    
+    }
+
+    if (modelAction == "Delete")
+    {
+        var id = Convert.ToInt32(args[2]);
+        labRepository.Delete(id);
+    }
 }
