@@ -27,11 +27,7 @@ class LabRepository
 
         while(reader.Read())
         {
-            var id = reader.GetInt32(0);
-            var number = reader.GetInt32(1);
-            var name = reader.GetString(2);
-            var block = reader.GetString(3);
-            var lab = new Lab(id, number, name, block);
+            var lab = ReaderToLab(reader);
             labs.Add(lab);
         }
 
@@ -67,7 +63,7 @@ class LabRepository
 
         var reader = command.ExecuteReader();
         reader.Read();
-        var lab = new Lab(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), reader.GetString(3));
+        var lab = ReaderToLab(reader);
 
         connection.Close();
 
@@ -103,6 +99,37 @@ class LabRepository
 
         command.ExecuteNonQuery();
         connection.Close();
+    }
+
+    public bool ExistsById(int id)
+    {
+        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = "SELECT count(id_lab) FROM Lab WHERE id_lab = $id";
+        command.Parameters.AddWithValue("$id_lab", id);
+
+        // var reader = command.ExecuteReader();
+        // reader.Read();
+        // var result = reader.GetBoolean(0);
+        
+        bool result = Convert.ToBoolean(command.ExecuteScalar());
+        connection.Close();
+
+        return result;
+    }
+
+    private Lab ReaderToLab(SqliteDataReader reader)
+    {
+        var lab = new Lab(
+            reader.GetInt32(0),
+            reader.GetInt32(1),
+            reader.GetString(2),
+            reader.GetString(3)
+        );
+
+        return lab;
     }
 
 }
