@@ -23,7 +23,7 @@ class DatabaseSetup
             CREATE TABLE IF NOT EXISTS Computers(
                 id int not null primary key,
                 ram varchar(100) not null,
-                processador varchar(100) not null
+                processor varchar(100) not null
             ); 
         ";
         command.ExecuteNonQuery();

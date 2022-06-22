@@ -48,7 +48,7 @@ computer);
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
 
-        connection.Execute("UPDATE Computers SET ram = @Ram, processador = @Processor  WHERE id == @Id", computer);
+        connection.Execute("UPDATE Computers SET ram = @Ram, processor = @Processor  WHERE id == @Id", computer);
         
         return GetById(computer.Id);
     }
