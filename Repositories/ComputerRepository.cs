@@ -38,24 +38,17 @@ computer);
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
 
-        var computer = connection.QuerySingle<Computer>("SELECT * FROM Computers WHERE Id == @Id", new { Id = id });
+        var computer = connection.QuerySingle<Computer>("SELECT * FROM Computers WHERE id == @Id", new { Id = id });
 
         return computer;
     }
 
     public Computer Update(Computer computer)
     {
-        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
 
-        var command = connection.CreateCommand();
-        command.CommandText = "UPDATE Computers SET ram = $ram, processador = $processador  WHERE id == $id";
-        command.Parameters.AddWithValue("$ram", computer.Ram);
-        command.Parameters.AddWithValue("$processador", computer.Processor);
-        command.Parameters.AddWithValue("$id", computer.Id);
-
-        command.ExecuteNonQuery();
-        connection.Close();
+        connection.Execute("UPDATE Computers SET ram = @Ram, processador = @Processor  WHERE id == @Id", computer);
         
         return GetById(computer.Id);
     }

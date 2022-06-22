@@ -37,25 +37,17 @@ class LabRepository
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
     
-        var lab = connection.QuerySingle<Lab>("SELECT * FROM Lab WHERE Id == @Id", new { Id = id });
+        var lab = connection.QuerySingle<Lab>("SELECT * FROM Lab WHERE id_lab == @Id", new { Id = id });
 
         return lab;
     }
 
     public Lab Update(Lab lab)
     {
-        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
 
-        var command = connection.CreateCommand();
-        command.CommandText = "UPDATE Lab SET number = $number, name = $name, block = $block  WHERE id_lab == $id";
-        command.Parameters.AddWithValue("$number", lab.Number);
-        command.Parameters.AddWithValue("$name", lab.Name);
-        command.Parameters.AddWithValue("$block", lab.Block);
-        command.Parameters.AddWithValue("$id", lab.Id);
-
-        command.ExecuteNonQuery();
-        connection.Close();
+        connection.Execute("UPDATE Lab SET number = @Number, name = @Name, block = @Block  WHERE id_lab == @id", lab);
         
         return GetById(lab.Id);
     }
