@@ -14,25 +14,12 @@ class LabRepository
         _databaseConfig = databaseConfig;
     }
 
-    public List<Lab> GetAll()
+    public IEnumerable<Lab> GetAll()
     {
-        var labs = new List<Lab>();
-        
-        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
 
-        var command = connection.CreateCommand();
-        command.CommandText = "SELECT * FROM Lab";
-
-        var reader = command.ExecuteReader();
-
-        while(reader.Read())
-        {
-            var lab = ReaderToLab(reader);
-            labs.Add(lab);
-        }
-
-        connection.Close();
+        var labs = connection.Query<Lab>("SELECT * FROM Lab");
 
         return labs;
     }
