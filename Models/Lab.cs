@@ -7,6 +7,10 @@ class Lab
     public string Name { get; set; }
     public string Block { get; set; }
 
+    public Lab(){
+        
+    }
+
     public Lab(int id, int number, string name, string block)
     {
         Id = id;

@@ -35,18 +35,10 @@ computer);
 
     public Computer GetById(int id)
     {
-        var connection = new SqliteConnection(_databaseConfig.ConnectionString);
+        using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
 
-        var command = connection.CreateCommand();
-        command.CommandText = "SELECT * FROM Computers WHERE id == $id";
-        command.Parameters.AddWithValue("$id", id);
-
-        var reader = command.ExecuteReader();
-        reader.Read();
-        var computer = ReaderToComputer(reader);
-
-        connection.Close();
+        var computer = connection.QuerySingle<Computer>("SELECT * FROM Computers WHERE Id == @Id", new { Id = id });
 
         return computer;
     }
