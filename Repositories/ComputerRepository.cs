@@ -66,7 +66,7 @@ computer);
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
    
-        bool result = connection.ExecuteScalar<bool>("SELECT count(id) FROM Computers WHERE id = $Id", new {Id = id});
+        bool result = connection.ExecuteScalar<bool>("SELECT count(id) FROM Computers WHERE id = @Id", new {Id = id});
 
         return result;
     }

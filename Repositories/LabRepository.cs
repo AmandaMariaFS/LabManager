@@ -65,7 +65,7 @@ class LabRepository
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
         
-        bool result = connection.ExecuteScalar<bool>("SELECT count(id_lab) FROM Lab WHERE id_lab = $Id", new {Id = id});
+        bool result = connection.ExecuteScalar<bool>("SELECT count(id_lab) FROM Lab WHERE id_lab = @Id", new {Id = id});
 
         return result;
     }
