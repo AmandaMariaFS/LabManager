@@ -37,7 +37,7 @@ class LabRepository
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
     
-        var lab = connection.QuerySingle<Lab>("SELECT * FROM Lab WHERE id_lab == @Id", new { Id = id });
+        var lab = connection.QuerySingle<Lab>("SELECT * FROM Lab WHERE id == @Id", new { Id = id });
 
         return lab;
     }
@@ -47,7 +47,7 @@ class LabRepository
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
 
-        connection.Execute("UPDATE Lab SET number = @Number, name = @Name, block = @Block  WHERE id_lab == @id", lab);
+        connection.Execute("UPDATE Lab SET number = @Number, name = @Name, block = @Block  WHERE id == @Id", lab);
         
         return GetById(lab.Id);
     }
@@ -57,7 +57,7 @@ class LabRepository
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
 
-        connection.Execute("DELETE FROM Lab WHERE id_lab == @Id", new {Id = id});
+        connection.Execute("DELETE FROM Lab WHERE id == @Id", new {Id = id});
     }
 
     public bool ExistsById(int id)
@@ -65,7 +65,7 @@ class LabRepository
         using var connection = new SqliteConnection(_databaseConfig.ConnectionString);
         connection.Open();
         
-        bool result = connection.ExecuteScalar<bool>("SELECT count(id_lab) FROM Lab WHERE id_lab = @Id", new {Id = id});
+        bool result = connection.ExecuteScalar<bool>("SELECT count(id) FROM Lab WHERE id = @Id", new {Id = id});
 
         return result;
     }

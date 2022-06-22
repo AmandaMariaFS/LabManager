@@ -92,8 +92,16 @@ if(modelName == "Lab")
     if (modelAction == "Show")
     {
         var id = Convert.ToInt32(args[2]);
-        var lab = labRepository.GetById(id);
-        Console.WriteLine("{0}, {1}, {2}, {3}", lab.Id, lab.Number, lab.Name, lab.Block);
+
+        if(labRepository.ExistsById(id))
+        {
+            var lab = labRepository.GetById(id);
+            Console.WriteLine("{0}, {1}, {2}, {3}", lab.Id, lab.Number, lab.Name, lab.Block);
+        }
+        else
+        {
+            Console.WriteLine($"O lab {id} não existe");
+        }
     }
 
     if (modelAction == "Update")
