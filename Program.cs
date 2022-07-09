@@ -15,10 +15,19 @@ if(modelName == "Computer")
 {
     if(modelAction == "List")
     {
-        foreach (var computer in computerRepository.GetAll())
+        
+        if (computerRepository.GetAll().Count() > 0)
         {
-            Console.WriteLine("{0}, {1}, {2}", computer.Id, computer.Ram, computer.Processor);
+            foreach (var computer in computerRepository.GetAll())
+            {
+                Console.WriteLine("{0}, {1}, {2}", computer.Id, computer.Ram, computer.Processor);
+            }
         }
+        else
+        {
+            Console.WriteLine("Nenhum computador adicionado ainda");
+        }
+     
     }
 
     if(modelAction == "New")
@@ -29,14 +38,14 @@ if(modelName == "Computer")
 
         if(!computerRepository.ExistsById(id))
         {
-            Console.WriteLine($"Computador {0} adicionado");
+            Console.WriteLine($"Computador {id} adicionado");
 
             var computer = new Computer(id, ram, processor);
             computerRepository.Save(computer);
         }
         else
         {
-            Console.WriteLine($"O computador {0} já existe");
+            Console.WriteLine($"O computador {id} já existe");
         }
 
     }
@@ -96,10 +105,19 @@ if(modelName == "Lab")
 {
     if(modelAction == "List")
     {
-        foreach (var Lab in labRepository.GetAll())
+
+        if (labRepository.GetAll().Count() > 0)
         {
-            Console.WriteLine("{0}, {1}, {2}, {3}", Lab.Id, Lab.Number, Lab.Name, Lab.Block);
+            foreach (var Lab in labRepository.GetAll())
+            {
+                Console.WriteLine("{0}, {1}, {2}, {3}", Lab.Id, Lab.Number, Lab.Name, Lab.Block);
+            }
         }
+        else
+        {
+            Console.WriteLine("Nenhum lab adicionado ainda");
+        }
+        
     }
 
     if(modelAction == "New")
